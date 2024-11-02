@@ -11,35 +11,39 @@ definePageMeta({
         password:"password"
     });
 
+    //Chamar a api para poder fazer o login
     const handleLogin = async () => {
-        //caminho conforme documentação do sanctum Laravel
+
+        //useApi 
+        await useApi("sanctum/csrf-cookie");
+        //componente para login
+        await useApi('login', {method: 'POST', body: form.value});
+        //buscar user
+        const user = await useApi('api/user');
+
+        console.log(user);
+
+    };
+
+    const getUser = async () => {
+        /*
         await useFetch("http://localhost:8000/sanctum/csrf-cookie", {
             credentials: "include",
         });
-
-        const cookie = useCookie("XSRF-TOKEN");
-
-        //console.log(cookie.value as string);
-
-        await useFetch("http://localhost:8000/login", {
-            method: "POST",
-            body: form.value,
-            credentials: "include",
-            watch: false,
-            headers: {
-                "X-XSRF-TOKEN": cookie.value as string,
-            },
-        });
-
+        
         const user = await useFetch("http://localhost:8000/api/user", {
             credentials:"include",
         });
-
-        console.log(user);
-    };
-
+        
     
-    //Chamar a api para poder fazer o login
+    */
+    //useApi 
+        await useApi("sanctum/csrf-cookie");
+        //buscar user
+        const user = await useApi('api/user');
+        console.log(user.data.value);
+    
+    };
 
 </script>
 
@@ -53,6 +57,7 @@ definePageMeta({
         <input v-model="form.email" type="email">
         <input v-model="form.password" type="password">
         <button type="submit" class="bg-gray-50 text-black">Login</button>
+        <button type="button" @click="getUser" class="bg-gray-50 text-black">Get User</button>
     </form>
 </template>
 
