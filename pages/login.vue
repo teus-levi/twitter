@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import { useAuthStore } from '~/stores/useAuthStore';
+
 definePageMeta({
     layout:'guest',
     middleware:['guest']
-    })
+    });
+
+    const authStore = useAuthStore();
+
+    console.log(authStore);
 
 
     //Formulário com as informações de login: objeto
@@ -14,34 +20,21 @@ definePageMeta({
     //Chamar a api para poder fazer o login
     const handleLogin = async () => {
 
-        //useApi 
-        await useApi("sanctum/csrf-cookie");
-        //componente para login
-        await useApi('login', {method: 'POST', body: form.value});
-        //buscar user
-        const user = await useApi('api/user');
+        authStore.login(form.value);
 
-        console.log(user);
+        //useApi 
+        //await useApi("sanctum/csrf-cookie");
+        //componente para login
+        //await useApi('login', {method: 'POST', body: form.value});
+        //buscar user
+        
+
+        //console.log(user);
 
     };
 
     const getUser = async () => {
-        /*
-        await useFetch("http://localhost:8000/sanctum/csrf-cookie", {
-            credentials: "include",
-        });
-        
-        const user = await useFetch("http://localhost:8000/api/user", {
-            credentials:"include",
-        });
-        
-    
-    */
-    //useApi 
-        await useApi("sanctum/csrf-cookie");
-        //buscar user
-        const user = await useApi('api/user');
-        console.log(user.data.value);
+        console.log(authStore.user);
     
     };
 
