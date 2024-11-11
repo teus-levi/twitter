@@ -20,7 +20,8 @@ definePageMeta({
     //Chamar a api para poder fazer o login
     const handleLogin = async () => {
 
-        authStore.login(form.value);
+        await authStore.login(form.value);
+        navigateTo("/");
 
         //useApi 
         //await useApi("sanctum/csrf-cookie");
