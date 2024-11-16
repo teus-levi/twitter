@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import actions from '~/actions';
+import type { LoginForm } from '~/actions/auth/login';
+import AuthRepository from '~/repositores/AuthRepository';
 import { useAuthStore } from '~/stores/useAuthStore';
 
 definePageMeta({
@@ -6,13 +9,14 @@ definePageMeta({
     middleware:['guest']
     });
 
+    //instanciando a loja
     const authStore = useAuthStore();
 
-    console.log(authStore);
+    //console.log(authStore);
 
 
     //Formulário com as informações de login: objeto
-    const form = ref({
+    const form = ref<LoginForm>({
         email:"test@example.com",
         password:"password"
     });
@@ -20,17 +24,13 @@ definePageMeta({
     //Chamar a api para poder fazer o login
     const handleLogin = async () => {
 
-        await authStore.login(form.value);
+        const repo  = AuthRepository;
+
+        await repo.login(form.value);
+
+        await actions.auth.login(form.value);
+
         navigateTo("/");
-
-        //useApi 
-        //await useApi("sanctum/csrf-cookie");
-        //componente para login
-        //await useApi('login', {method: 'POST', body: form.value});
-        //buscar user
-        
-
-        //console.log(user);
 
     };
 
